@@ -41,7 +41,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/guneyberkayates/react-native-rotate-card",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guneyberkayates/react-native-rotate-card.git"
+  },
   "author": "Guney Berkay <guneyberkayates@outlook.com> (https://github.com/guneyberkayates)",
   "license": "MIT",
   "bugs": {
@@ -161,5 +164,8 @@
     "name": "RNRotateCardSpec",
     "type": "modules",
     "jsSrcsDir": "src"
+  },
+  "directories": {
+    "example": "example"
   }
 }
