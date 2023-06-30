@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, Dimensions, Text } from 'react-native';
-import Animated, {
-  Extrapolate,
+import {
+  Dimensions,StyleSheet
+} from 'react-native';
+import Animated, { Extrapolate,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
@@ -9,27 +10,33 @@ import Animated, {
   useAnimatedGestureHandler,
   withSpring,
 } from 'react-native-reanimated';
-import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 
-const HEIGHT = Dimensions.get('window').height;
-const WIDTH =  Dimensions.get('window').width;
+const { height: HEIGHT, width: WIDTH } = Dimensions.get('window');
 
+interface PersistentRotatingCardProps {
+  children: React.ReactNode;
+  style?: any;
+  perspective?: number;
+}
 
-const ResettableRotatingCard = ({ children, style, perspective }) => {
+const PersistentRotatingCard: React.FC<PersistentRotatingCardProps> = ({
+  children,
+  style,
+  perspective,
+}) => {
   const rotateXValue = useSharedValue(0);
   const rotateYValue = useSharedValue(0);
 
-  const handleCardSelect = () => {
-    rotateXValue.value = withTiming(0);
-    rotateYValue.value = withTiming(0);
-  };
-
-  const gestureHandlerResettable = useAnimatedGestureHandler({
+  const gestureHandlerPersistent = useAnimatedGestureHandler({
     onStart: () => {
       rotateXValue.value = withTiming(0);
       rotateYValue.value = withTiming(0);
     },
-    onActive: (event) => {
+    onActive: (event, context) => {
       rotateXValue.value = withSpring(
         interpolate(event.translationY, [0, HEIGHT], [10, -10], {
           extrapolateLeft: Extrapolate.CLAMP,
@@ -43,10 +50,6 @@ const ResettableRotatingCard = ({ children, style, perspective }) => {
         })
       );
     },
-    onEnd: () => {
-      rotateXValue.value = withTiming(0);
-      rotateYValue.value = withTiming(0);
-    },
   });
 
   const rStyle = useAnimatedStyle(() => {
@@ -55,29 +58,24 @@ const ResettableRotatingCard = ({ children, style, perspective }) => {
 
     return {
       transform: [
-        {  perspective: perspective || 500 },
+        { perspective: perspective || 500 },
         { rotateX },
         { rotateY },
       ],
     };
   });
 
-  const cardStyle = [rStyle];
+  const cardStyle = [rStyle, style];
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <PanGestureHandler onGestureEvent={gestureHandlerResettable}>
-        <Animated.View style={cardStyle}>
-        <TouchableOpacity activeOpacity={1} onPress={handleCardSelect}
->
-{children}
-</TouchableOpacity>
+    <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+      <PanGestureHandler onGestureEvent={gestureHandlerPersistent}>
+        <Animated.View style={[StyleSheet.absoluteFill, cardStyle]}>
+          {children}
         </Animated.View>
       </PanGestureHandler>
     </GestureHandlerRootView>
   );
 };
 
-export default ResettableRotatingCard;
-
-
+export default PersistentRotatingCard;

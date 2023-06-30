@@ -82,8 +82,8 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-reanimated":"*",
-    "react-native-gesture-handler":"*"
+    "react-native-gesture-handler": "*",
+    "react-native-reanimated": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
