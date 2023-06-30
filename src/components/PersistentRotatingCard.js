@@ -1,81 +1,69 @@
-import React from 'react';
-import {
-  Dimensions,StyleSheet
-} from 'react-native';
-import Animated, { Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  useAnimatedGestureHandler,
-  withSpring,
-} from 'react-native-reanimated';
-import {
-  GestureHandlerRootView,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
-
-const { height: HEIGHT, width: WIDTH } = Dimensions.get('window');
-
-interface PersistentRotatingCardProps {
-  children: React.ReactNode;
-  style?: any;
-  perspective?: number;
-}
-
-const PersistentRotatingCard: React.FC<PersistentRotatingCardProps> = ({
-  children,
-  style,
-  perspective,
-}) => {
-  const rotateXValue = useSharedValue(0);
-  const rotateYValue = useSharedValue(0);
-
-  const gestureHandlerPersistent = useAnimatedGestureHandler({
-    onStart: () => {
-      rotateXValue.value = withTiming(0);
-      rotateYValue.value = withTiming(0);
-    },
-    onActive: (event, context) => {
-      rotateXValue.value = withSpring(
-        interpolate(event.translationY, [0, HEIGHT], [10, -10], {
-          extrapolateLeft: Extrapolate.CLAMP,
-          extrapolateRight: Extrapolate.CLAMP,
-        })
-      );
-      rotateYValue.value = withSpring(
-        interpolate(event.translationX, [0, WIDTH], [-10, 10], {
-          extrapolateLeft: Extrapolate.CLAMP,
-          extrapolateRight: Extrapolate.CLAMP,
-        })
-      );
-    },
-  });
-
-  const rStyle = useAnimatedStyle(() => {
-    const rotateX = `${rotateXValue.value}deg`;
-    const rotateY = `${rotateYValue.value}deg`;
-
-    return {
-      transform: [
-        { perspective: perspective || 500 },
-        { rotateX },
-        { rotateY },
-      ],
-    };
-  });
-
-  const cardStyle = [rStyle, style];
-
-  return (
-    <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-      <PanGestureHandler onGestureEvent={gestureHandlerPersistent}>
-        <Animated.View style={[StyleSheet.absoluteFill, cardStyle]}>
-          {children}
-        </Animated.View>
-      </PanGestureHandler>
-    </GestureHandlerRootView>
-  );
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
-
-export default PersistentRotatingCard;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const react_native_1 = require("react-native");
+const react_native_reanimated_1 = __importStar(require("react-native-reanimated"));
+const react_native_gesture_handler_1 = require("react-native-gesture-handler");
+const { height: HEIGHT, width: WIDTH } = react_native_1.Dimensions.get('window');
+const PersistentRotatingCard = ({ children, style, perspective, }) => {
+    const rotateXValue = (0, react_native_reanimated_1.useSharedValue)(0);
+    const rotateYValue = (0, react_native_reanimated_1.useSharedValue)(0);
+    const gestureHandlerPersistent = (0, react_native_reanimated_1.useAnimatedGestureHandler)({
+        onStart: () => {
+            rotateXValue.value = (0, react_native_reanimated_1.withTiming)(0);
+            rotateYValue.value = (0, react_native_reanimated_1.withTiming)(0);
+        },
+        onActive: (event, context) => {
+            rotateXValue.value = (0, react_native_reanimated_1.withSpring)((0, react_native_reanimated_1.interpolate)(event.translationY, [0, HEIGHT], [10, -10], {
+                extrapolateLeft: react_native_reanimated_1.Extrapolate.CLAMP,
+                extrapolateRight: react_native_reanimated_1.Extrapolate.CLAMP,
+            }));
+            rotateYValue.value = (0, react_native_reanimated_1.withSpring)((0, react_native_reanimated_1.interpolate)(event.translationX, [0, WIDTH], [-10, 10], {
+                extrapolateLeft: react_native_reanimated_1.Extrapolate.CLAMP,
+                extrapolateRight: react_native_reanimated_1.Extrapolate.CLAMP,
+            }));
+        },
+    });
+    const rStyle = (0, react_native_reanimated_1.useAnimatedStyle)(() => {
+        const rotateX = `${rotateXValue.value}deg`;
+        const rotateY = `${rotateYValue.value}deg`;
+        return {
+            transform: [
+                { perspective: perspective || 500 },
+                { rotateX },
+                { rotateY },
+            ],
+        };
+    });
+    const cardStyle = [rStyle, style];
+    return (react_1.default.createElement(react_native_gesture_handler_1.GestureHandlerRootView, { style: react_native_1.StyleSheet.absoluteFill },
+        react_1.default.createElement(react_native_gesture_handler_1.PanGestureHandler, { onGestureEvent: gestureHandlerPersistent },
+            react_1.default.createElement(react_native_reanimated_1.default.View, { style: [react_native_1.StyleSheet.absoluteFill, cardStyle] }, children))));
+};
+exports.default = PersistentRotatingCard;
